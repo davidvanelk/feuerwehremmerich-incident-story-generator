@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - k8s/namespace.yaml
   - k8s/domain-config.yaml
-  - k8s/cluster-issuer.yaml
   - k8s/certificate.yaml
   - k8s/deployment.yaml
   - k8s/service.yaml
@@ -34,13 +33,3 @@ replacements:
           name: incident-story-generator
         fieldPaths:
           - spec.dnsNames.0
-  - source:
-      kind: ConfigMap
-      name: domain-config
-      fieldPath: data.ACME_EMAIL
-    targets:
-      - select:
-          kind: ClusterIssuer
-          name: letsencrypt-production
-        fieldPaths:
-          - spec.acme.email

@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: incident-story-generator-tls
   issuerRef:
-    name: letsencrypt-production
+    name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
     - story-generator.example.com

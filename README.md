@@ -38,13 +38,14 @@ and ConfigMaps; you own the sensitive Secret separately.
 
 ## Domain and HTTPS
 
-Set `DNS_NAME` and `ACME_EMAIL` in `k8s/domain-config.yaml`. Kustomize copies them
-into the Traefik Ingress, Certificate, and Let's Encrypt ClusterIssuer. Argo CD
-creates all three resources. cert-manager completes the HTTP-01 challenge,
+Set `DNS_NAME` in `k8s/domain-config.yaml`. Kustomize copies it into the Traefik
+Ingress and Certificate. Argo CD creates both resources using the cluster's
+existing `letsencrypt-prod` ClusterIssuer. cert-manager completes the HTTP-01 challenge,
 stores the issued certificate in `incident-story-generator-tls`, and renews it
 automatically. Traefik reads that Secret through the Ingress TLS configuration.
 
-The cluster must have cert-manager installed, including its CRDs. No Traefik
+The cluster must have cert-manager and the `letsencrypt-prod` ClusterIssuer
+installed. No Traefik
 certificate resolver and no manually created TLS Secret are needed. The
 domain's A/AAAA records must point to Traefik, and its HTTP entry point must be
 publicly reachable so Let's Encrypt can complete the HTTP-01 challenge.

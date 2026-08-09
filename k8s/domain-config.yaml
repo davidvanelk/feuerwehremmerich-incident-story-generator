@@ -5,4 +5,3 @@ metadata:
   namespace: incident-story-generator
 data:
   DNS_NAME: story-generator.example.com
-  ACME_EMAIL: admin@example.com
