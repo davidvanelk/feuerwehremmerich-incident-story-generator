@@ -47,6 +47,8 @@ Ingress and Certificate. Argo CD creates both resources using the cluster's
 existing `letsencrypt-prod` ClusterIssuer. cert-manager completes the HTTP-01 challenge,
 stores the issued certificate in `incident-story-generator-tls`, and renews it
 automatically. Traefik reads that Secret through the Ingress TLS configuration.
+An application-owned Traefik middleware and HTTP Ingress permanently redirect
+plain HTTP requests to the HTTPS endpoint.
 
 The cluster must have cert-manager and the `letsencrypt-prod` ClusterIssuer
 installed. No Traefik

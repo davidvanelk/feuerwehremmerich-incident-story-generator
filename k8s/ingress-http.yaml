@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: incident-story-generator-http
+  namespace: incident-story-generator
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: incident-story-generator-https-redirect@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: story-generator.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: incident-story-generator
+                port:
+                  name: http
