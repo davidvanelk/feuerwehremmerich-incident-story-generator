@@ -16,6 +16,10 @@ track the `main` branch, and use `.` as its path. Enable
 automatic sync if each successful workflow run should be rolled out without a
 manual approval in Argo CD.
 
+Bootstrap the Argo CD application once with `kubectl apply -f
+argocd/application.yaml`. After that, Argo CD tracks and automatically
+reconciles `main`.
+
 The GitHub Actions workflow validates the Kustomize deployment on every push to
 `main`. Argo CD detects the same push and deploys the manifests. The site and
 nginx configuration are mounted into the stock `nginx:1.31-alpine` image as
