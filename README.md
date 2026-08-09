@@ -2,6 +2,8 @@
 
 Story Generator for the @feuerwehremmerich Instagram account. Make generating stories for incidents easy and consistent!
 
+Thanks to Floris Wichert for providing the HTML file.
+
 ## Architecture
 
 The architecture is simple - in the `site/` directory, all files can be hosted directly on a webserver. This repo adds support for Docker and Kubernetes to deploy on infrastructure.
