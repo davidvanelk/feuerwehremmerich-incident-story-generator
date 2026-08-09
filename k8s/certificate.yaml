@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: incident-story-generator
+  namespace: incident-story-generator
+spec:
+  secretName: incident-story-generator-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - story-generator.example.com

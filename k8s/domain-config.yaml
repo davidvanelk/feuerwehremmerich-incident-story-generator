@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: domain-config
+  namespace: incident-story-generator
+data:
+  DNS_NAME: story-generator.example.com
+  ACME_EMAIL: admin@example.com

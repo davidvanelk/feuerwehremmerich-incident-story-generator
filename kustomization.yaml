@@ -2,8 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - k8s/namespace.yaml
+  - k8s/domain-config.yaml
+  - k8s/cluster-issuer.yaml
+  - k8s/certificate.yaml
   - k8s/deployment.yaml
   - k8s/service.yaml
+  - k8s/ingress.yaml
 configMapGenerator:
   - name: site
     namespace: incident-story-generator
@@ -13,3 +17,30 @@ configMapGenerator:
     namespace: incident-story-generator
     files:
       - default.conf=k8s/default.conf
+replacements:
+  - source:
+      kind: ConfigMap
+      name: domain-config
+      fieldPath: data.DNS_NAME
+    targets:
+      - select:
+          kind: Ingress
+          name: incident-story-generator
+        fieldPaths:
+          - spec.rules.0.host
+          - spec.tls.0.hosts.0
+      - select:
+          kind: Certificate
+          name: incident-story-generator
+        fieldPaths:
+          - spec.dnsNames.0
+  - source:
+      kind: ConfigMap
+      name: domain-config
+      fieldPath: data.ACME_EMAIL
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-production
+        fieldPaths:
+          - spec.acme.email
