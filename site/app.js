@@ -94,17 +94,11 @@
         ? document.getElementById("ortFreitext").value.trim()
         : locationSelection;
 
-    const selectedUnits = Array.from(
-      document.querySelectorAll("#kraefteChecks input:checked"),
-    ).map((el) => el.value);
+    const selectedUnits = Array.from(document.querySelectorAll("#kraefteChecks input:checked")).map(
+      (el) => el.value,
+    );
     const unitsText = selectedUnits.join(", ");
-    const fireGroups = [
-      "Hauptamtliche Kräfte",
-      "LE Stadt",
-      "LE Vrasselt",
-      "LE Elten",
-      "LE Hüthum",
-    ];
+    const fireGroups = ["Hauptamtliche Kräfte", "LE Stadt", "LE Vrasselt", "LE Elten", "LE Hüthum"];
     let unitsIcon = "🚒";
     if (!selectedUnits.some((value) => fireGroups.includes(value))) {
       if (selectedUnits.includes("Rettungsdienst")) unitsIcon = "🚑";
@@ -118,8 +112,7 @@
     }
     let formattedTime = formattedDate;
     if (time) {
-      formattedTime =
-        (formattedDate ? formattedDate + " - " : "") + time + " Uhr";
+      formattedTime = (formattedDate ? formattedDate + " - " : "") + time + " Uhr";
     }
 
     const items = [
@@ -151,22 +144,13 @@
   }
 
   // Wire up inputs.
-  [
-    "artIcon",
-    "artText",
-    "datum",
-    "uhrzeit",
-    "ortSelect",
-    "ortFreitext",
-  ].forEach((id) => {
+  ["artIcon", "artText", "datum", "uhrzeit", "ortSelect", "ortFreitext"].forEach((id) => {
     document.getElementById(id).addEventListener("input", draw);
     document.getElementById(id).addEventListener("change", draw);
   });
-  document
-    .querySelectorAll("#kraefteChecks input[type=checkbox]")
-    .forEach((cb) => {
-      cb.addEventListener("change", draw);
-    });
+  document.querySelectorAll("#kraefteChecks input[type=checkbox]").forEach((cb) => {
+    cb.addEventListener("change", draw);
+  });
 
   const locationSelect = document.getElementById("ortSelect");
   const customLocationInput = document.getElementById("ortFreitext");
@@ -180,62 +164,44 @@
   const now = new Date();
   const pad = (n) => String(n).padStart(2, "0");
   document.getElementById("datum").value =
-    now.getFullYear() +
-    "-" +
-    pad(now.getMonth() + 1) +
-    "-" +
-    pad(now.getDate());
-  document.getElementById("uhrzeit").value =
-    pad(now.getHours()) + ":" + pad(now.getMinutes());
+    now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+  document.getElementById("uhrzeit").value = pad(now.getHours()) + ":" + pad(now.getMinutes());
 
-  document
-    .getElementById("bgUpload")
-    .addEventListener("change", function (e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function (ev) {
-        loadBg(ev.target.result);
-        document.getElementById("bgFilename").textContent =
-          "Eigenes Foto: " + file.name;
-      };
-      reader.readAsDataURL(file);
-    });
+  document.getElementById("bgUpload").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (ev) {
+      loadBg(ev.target.result);
+      document.getElementById("bgFilename").textContent = "Eigenes Foto: " + file.name;
+    };
+    reader.readAsDataURL(file);
+  });
 
-  document
-    .getElementById("bgReset")
-    .addEventListener("click", function () {
-      loadBg(DEFAULT_BG);
-      document.getElementById("bgFilename").textContent =
-        "Standard-Hintergrund aktiv";
-      document.getElementById("bgUpload").value = "";
-    });
+  document.getElementById("bgReset").addEventListener("click", function () {
+    loadBg(DEFAULT_BG);
+    document.getElementById("bgFilename").textContent = "Standard-Hintergrund aktiv";
+    document.getElementById("bgUpload").value = "";
+  });
 
-  document
-    .getElementById("downloadBtn")
-    .addEventListener("click", function () {
-      const artText =
-        document.getElementById("artText").value.trim() || "einsatz";
-      const slug =
-        artText
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)/g, "")
-          .slice(0, 30) || "einsatz";
-      const date = document.getElementById("datum").value || "";
-      canvas.toBlob(function (blob) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download =
-          "feuerwehr-emmerich-" +
-          slug +
-          (date ? "-" + date : "") +
-          ".png";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 2000);
-      }, "image/png");
-    });
+  document.getElementById("downloadBtn").addEventListener("click", function () {
+    const artText = document.getElementById("artText").value.trim() || "einsatz";
+    const slug =
+      artText
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "")
+        .slice(0, 30) || "einsatz";
+    const date = document.getElementById("datum").value || "";
+    canvas.toBlob(function (blob) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "feuerwehr-emmerich-" + slug + (date ? "-" + date : "") + ".png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }, "image/png");
+  });
 })();
