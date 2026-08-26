@@ -14,6 +14,8 @@ configMapGenerator:
     namespace: incident-story-generator
     files:
       - index.html=site/index.html
+      - styles.css=site/styles.css
+      - app.js=site/app.js
   - name: nginx-config
     namespace: incident-story-generator
     files:
