@@ -25,7 +25,7 @@
                 <option value="🔥">🔥 Brand</option>
                 <option value="🚗">🚗 Verkehr</option>
                 <option value="💧">💧 Wasser</option>
-                <option value="🚑">🚑 Person</option>
+                <option value="🚑">🚑 Rettungsdienst</option>
                 <option value="🚪">🚪 Türöffnung</option>
                 <option value="🐾">🐾 Tier</option>
                 <option value="⚠️">⚠️ Sonstiges</option>
@@ -130,6 +130,65 @@
           <div class="preview-wrap">
             <div class="phone">
               <canvas id="storyCanvas" width="1080" height="1920"></canvas>
+            </div>
+            <div class="canvas-controls" aria-label="Texteinstellungen im Bild">
+              <h5>Textposition</h5>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="textPositionX">Horizontal</label>
+                  <output id="textPositionXValue" for="textPositionX">58 px</output>
+                </div>
+                <input id="textPositionX" type="range" min="-400" max="800" value="58" step="1" />
+              </div>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="textPositionY">Vertikal</label>
+                  <output id="textPositionYValue" for="textPositionY">338 px</output>
+                </div>
+                <input id="textPositionY" type="range" min="-400" max="1600" value="338" step="1" />
+              </div>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="textRotation">Drehung</label>
+                  <output id="textRotationValue" for="textRotation">0°</output>
+                </div>
+                <input id="textRotation" type="range" min="-30" max="30" value="0" step="1" />
+              </div>
+              <button class="btn small text-reset" id="resetTextPosition" type="button">
+                Textposition zurücksetzen
+              </button>
+              <h5 class="control-section-title">Textschatten</h5>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="shadowOpacity">Deckkraft</label>
+                  <output id="shadowOpacityValue" for="shadowOpacity">55 %</output>
+                </div>
+                <input id="shadowOpacity" type="range" min="0" max="100" value="55" step="1" />
+              </div>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="shadowBlur">Unschärfe</label>
+                  <output id="shadowBlurValue" for="shadowBlur">14 px</output>
+                </div>
+                <input id="shadowBlur" type="range" min="0" max="50" value="14" step="1" />
+              </div>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="shadowOffsetX">Horizontal</label>
+                  <output id="shadowOffsetXValue" for="shadowOffsetX">0 px</output>
+                </div>
+                <input id="shadowOffsetX" type="range" min="-50" max="50" value="0" step="1" />
+              </div>
+              <div class="range-control">
+                <div class="range-label">
+                  <label for="shadowOffsetY">Vertikal</label>
+                  <output id="shadowOffsetYValue" for="shadowOffsetY">2 px</output>
+                </div>
+                <input id="shadowOffsetY" type="range" min="-50" max="50" value="2" step="1" />
+              </div>
+              <button class="btn small text-reset" id="resetTextShadow" type="button">
+                Textschatten zurücksetzen
+              </button>
             </div>
             <div class="actions">
               <button class="btn primary" id="downloadBtn" type="button">

@@ -29,7 +29,6 @@
   const FONT_SIZE = 62;
   const LINE_SPACING = 124; // vertical distance between item baselines when single-line
   const WRAP_LINE_HEIGHT = FONT_SIZE * 1.08;
-  const FIRST_LINE_Y = 338;
   const FONT =
     "800 " +
     FONT_SIZE +
@@ -97,7 +96,6 @@
     const selectedUnits = Array.from(document.querySelectorAll("#kraefteChecks input:checked")).map(
       (el) => el.value,
     );
-    const unitsText = selectedUnits.join(", ");
     const fireGroups = ["Hauptamtliche Kräfte", "LE Stadt", "LE Vrasselt", "LE Elten", "LE Hüthum"];
     let unitsIcon = "🚒";
     if (!selectedUnits.some((value) => fireGroups.includes(value))) {
@@ -119,28 +117,83 @@
       { icon: artIcon, text: artText },
       { icon: "⏰", text: formattedTime },
       { icon: "📍", text: location },
-      { icon: unitsIcon, text: unitsText },
     ];
+    const positionX = Number(document.getElementById("textPositionX").value);
+    const positionY = Number(document.getElementById("textPositionY").value);
+    const rotation = Number(document.getElementById("textRotation").value) * (Math.PI / 180);
+    const shadowOpacity = Number(document.getElementById("shadowOpacity").value) / 100;
+    const shadowBlur = Number(document.getElementById("shadowBlur").value);
+    const shadowOffsetX = Number(document.getElementById("shadowOffsetX").value);
+    const shadowOffsetY = Number(document.getElementById("shadowOffsetY").value);
+    ctx.font = fontStr(FONT_SIZE);
+    const unitIndent = ctx.measureText(unitsIcon + "  ").width;
+    const unitTextWidth = MAX_TEXT_WIDTH - unitIndent;
+    const unitLines = [];
+    let currentUnitLine = "";
 
+    selectedUnits.forEach((unit) => {
+      const candidate = currentUnitLine ? currentUnitLine + ", " + unit : unit;
+      const candidateWidth = ctx.measureText(candidate + ",").width;
+
+      if (currentUnitLine && candidateWidth > unitTextWidth) {
+        unitLines.push(currentUnitLine);
+        currentUnitLine = unit;
+      } else {
+        currentUnitLine = candidate;
+      }
+    });
+
+    if (currentUnitLine) {
+      unitLines.push(currentUnitLine);
+    }
+
+    const unitLineCount = Math.max(unitLines.length, 1);
+    const unitsStartY = positionY + items.length * LINE_SPACING;
+    const lastTextLineY = unitsStartY + (unitLineCount - 1) * WRAP_LINE_HEIGHT;
+    const textBlockCenterX = positionX + MAX_TEXT_WIDTH / 2;
+    const textBlockCenterY = (positionY + lastTextLineY) / 2;
+
+    ctx.save();
+    ctx.translate(textBlockCenterX, textBlockCenterY);
+    ctx.rotate(rotation);
+    ctx.translate(-textBlockCenterX, -textBlockCenterY);
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#ffffff";
-    ctx.shadowColor = "rgba(0,0,0,0.55)";
-    ctx.shadowBlur = 14;
-    ctx.shadowOffsetY = 2;
+    ctx.shadowColor = `rgba(0, 0, 0, ${shadowOpacity})`;
+    ctx.shadowBlur = shadowBlur;
+    ctx.shadowOffsetX = shadowOffsetX;
+    ctx.shadowOffsetY = shadowOffsetY;
 
-    let cursorY = FIRST_LINE_Y;
+    let cursorY = positionY;
 
     items.forEach((item) => {
       const full = item.icon + "  " + item.text;
       const size = fitFontSize(full, MAX_TEXT_WIDTH, FONT_SIZE);
       ctx.font = fontStr(size);
-      ctx.fillText(full, LEFT_MARGIN, cursorY);
+      ctx.fillText(full, positionX, cursorY);
       cursorY += LINE_SPACING;
     });
 
+    ctx.font = fontStr(FONT_SIZE);
+    if (selectedUnits.length === 0) {
+      ctx.fillText(unitsIcon, positionX, cursorY);
+    } else {
+      unitLines.forEach((line, index) => {
+        const hasFollowingLine = index < unitLines.length - 1;
+        const lineX = index === 0 ? positionX : positionX + unitIndent;
+        const lineText =
+          (index === 0 ? unitsIcon + "  " : "") + line + (hasFollowingLine ? "," : "");
+
+        ctx.fillText(lineText, lineX, cursorY);
+        cursorY += WRAP_LINE_HEIGHT;
+      });
+    }
+
     ctx.shadowColor = "transparent";
     ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
+    ctx.restore();
   }
 
   // Wire up inputs.
@@ -150,6 +203,46 @@
   });
   document.querySelectorAll("#kraefteChecks input[type=checkbox]").forEach((cb) => {
     cb.addEventListener("change", draw);
+  });
+
+  const textPositionControls = [
+    { inputId: "textPositionX", outputId: "textPositionXValue", initialValue: 58, unit: " px" },
+    { inputId: "textPositionY", outputId: "textPositionYValue", initialValue: 338, unit: " px" },
+    { inputId: "textRotation", outputId: "textRotationValue", initialValue: 0, unit: "°" },
+  ];
+  const shadowControls = [
+    { inputId: "shadowOpacity", outputId: "shadowOpacityValue", initialValue: 55, unit: " %" },
+    { inputId: "shadowBlur", outputId: "shadowBlurValue", initialValue: 14, unit: " px" },
+    { inputId: "shadowOffsetX", outputId: "shadowOffsetXValue", initialValue: 0, unit: " px" },
+    { inputId: "shadowOffsetY", outputId: "shadowOffsetYValue", initialValue: 2, unit: " px" },
+  ];
+
+  [...textPositionControls, ...shadowControls].forEach(({ inputId, outputId, unit }) => {
+    const input = document.getElementById(inputId);
+    const output = document.getElementById(outputId);
+
+    input.addEventListener("input", () => {
+      output.value = input.value + unit;
+      draw();
+    });
+  });
+
+  document.getElementById("resetTextPosition").addEventListener("click", () => {
+    textPositionControls.forEach(({ inputId, outputId, initialValue, unit }) => {
+      document.getElementById(inputId).value = initialValue;
+      document.getElementById(outputId).value = initialValue + unit;
+    });
+
+    draw();
+  });
+
+  document.getElementById("resetTextShadow").addEventListener("click", () => {
+    shadowControls.forEach(({ inputId, outputId, initialValue, unit }) => {
+      document.getElementById(inputId).value = initialValue;
+      document.getElementById(outputId).value = initialValue + unit;
+    });
+
+    draw();
   });
 
   const locationSelect = document.getElementById("ortSelect");

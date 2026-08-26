@@ -263,6 +263,52 @@ canvas#storyCanvas {
   border-radius: 22px;
   background: #000;
 }
+.canvas-controls {
+  width: 260px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.canvas-controls h5 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.canvas-controls .control-section-title {
+  margin-top: 18px;
+}
+.range-control + .range-control {
+  margin-top: 10px;
+}
+.range-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+.range-label label {
+  margin: 0;
+  font-size: 12px;
+}
+.range-label output {
+  color: var(--text);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.range-control input[type="range"] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--red-bright);
+  cursor: pointer;
+}
+.text-reset {
+  width: 100%;
+  margin-top: 12px;
+}
 .hint {
   font-size: 12px;
   color: var(--text-dim);
