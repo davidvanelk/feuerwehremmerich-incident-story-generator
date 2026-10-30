@@ -29,6 +29,7 @@
                 <option value="🚪">🚪 Türöffnung</option>
                 <option value="🐾">🐾 Tier</option>
                 <option value="⚠️">⚠️ Sonstiges</option>
+                <option value="🌬️">🌬️ Sturmschaden</option>
               </select>
               <input type="text" id="artText" value="B1 - Fahrzeugbrand" maxlength="55" />
             </div>
@@ -52,9 +53,12 @@
             <h2><span class="dot"></span>Einsatzort</h2>
             <label>Ort</label>
             <select id="ortSelect">
+              <option value="Borghees">Borghees</option>
+              <option value="Dornick">Dornick</option>
               <option value="Emmerich" selected>Emmerich</option>
               <option value="Elten">Elten</option>
               <option value="Hüthum">Hüthum</option>
+              <option value="Praest">Praest</option>
               <option value="Vrasselt">Vrasselt</option>
               <option value="BAB 3">BAB 3</option>
               <option value="__freitext__">Freitext …</option>
@@ -73,16 +77,12 @@
             <h2><span class="dot"></span>Kräfte</h2>
             <div class="checkbox-list" id="kraefteChecks">
               <label class="check-row">
-                <input type="checkbox" value="Hauptamtliche Kräfte" checked />
+                <input type="checkbox" value="Hauptamtliche Kräfte" />
                 <span>Hauptamtliche Kräfte</span>
               </label>
               <label class="check-row">
-                <input type="checkbox" value="LE Stadt" checked />
+                <input type="checkbox" value="LE Stadt" />
                 <span>LE Stadt</span>
-              </label>
-              <label class="check-row">
-                <input type="checkbox" value="LE Vrasselt" />
-                <span>LE Vrasselt</span>
               </label>
               <label class="check-row">
                 <input type="checkbox" value="LE Elten" />
@@ -93,6 +93,16 @@
                 <span>LE Hüthum</span>
               </label>
               <label class="check-row">
+                <input type="checkbox" value="LE Vrasselt" />
+                <span>LE Vrasselt</span>
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" value="Wasserförderzug" />
+                <span>Wasserförderzug</span>
+              </label>
+
+              <label class="check-row">
                 <input type="checkbox" value="ELW" />
                 <span>ELW</span>
               </label>
@@ -101,9 +111,10 @@
                 <span>DLK</span>
               </label>
               <label class="check-row">
-                <input type="checkbox" value="Wasserförderzug" />
-                <span>Wasserförderzug</span>
+                <input type="checkbox" value="Mehrzweckboot" />
+                <span>Mehrzweckboot</span>
               </label>
+
               <label class="check-row">
                 <input type="checkbox" value="Rettungsdienst" />
                 <span>Rettungsdienst</span>
